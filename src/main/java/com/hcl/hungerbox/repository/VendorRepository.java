@@ -1,5 +1,6 @@
 package com.hcl.hungerbox.repository;
 
+import java.util.List;
 
 import java.util.Optional;
 
@@ -11,9 +12,9 @@ import com.hcl.hungerbox.entity.Vendor;
 @Repository
 public interface VendorRepository extends JpaRepository<Vendor, Integer> {
 	
-	public Optional<Vendor> findByVendorNameContains(String vendorName);
+	public Optional<List<Vendor>> findByVendorNameContains(String vendorName);
 
-//	Vendor findByVendorName(String vendorName);
+
 
 
 }
