@@ -8,7 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Order {
+public class Orders {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

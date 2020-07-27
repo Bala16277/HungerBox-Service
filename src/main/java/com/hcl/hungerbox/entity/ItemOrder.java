@@ -6,7 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.criteria.Order;
 
 @Entity
 public class ItemOrder {
@@ -21,7 +20,7 @@ public class ItemOrder {
 
 	@OneToOne
 	@JoinColumn(name = "orderId")
-	private Order order;
+	private Orders order;
 
 	private Integer quantity;
 
@@ -41,11 +40,11 @@ public class ItemOrder {
 		this.item = item;
 	}
 
-	public Order getOrder() {
+	public Orders getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public void setOrder(Orders order) {
 		this.order = order;
 	}
 

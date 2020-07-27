@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+	<property name="LOG_PATH" value="logs" />
+
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="com.hcl.ecommerce" level="debug">
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+
+	<appender name="FileAppender"
+		class="ch.qos.logback.core.FileAppender">
+		<file>${LOG_PATH}/Log.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>
+				%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+
+	<logger name="com.hcl.ecommerce" level="debug">
+		<appender-ref ref="FileAppender" />
+	</logger>
+
+	<!-- LOG everything at INFO level -->
+	<root level="info">
+		<appender-ref ref="FileAppender" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+
+
+</configuration>
