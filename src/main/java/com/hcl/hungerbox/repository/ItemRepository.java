@@ -12,12 +12,12 @@ import com.hcl.hungerbox.entity.Vendor;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
 
-//	public List<Item> findByItemNameContainsAndVendorNameContains(String itemName, String vendorName);
-
 	public Optional<List<Item>> findByItemNameContains(String itemName);
 
 	public Optional<List<Item>> findByVendor(Vendor vendor);
 
 	public Optional<List<Item>> findByItemNameContainsAndVendor(String itemName, Vendor vendor);
 
+	Item findByItemName(String itemName);
+	
 }
