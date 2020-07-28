@@ -21,8 +21,8 @@ public class SearchController {
 	@GetMapping("")
 	public ResponseEntity<ItemListResponseDto> searchMenu(@RequestParam(value = "itemName", required=false) String itemName,
 		@RequestParam(value = "vendorName", required=false) String vendorName) {
-		ItemListResponseDto itemListResponseDto = new ItemListResponseDto();
-		itemListResponseDto = searchService.searchMenu(itemName, vendorName);
+		//ItemListResponseDto itemListResponseDto = new ItemListResponseDto();
+		ItemListResponseDto itemListResponseDto = searchService.searchMenu(itemName, vendorName);
 		return new ResponseEntity<>(itemListResponseDto,HttpStatus.OK);
 		
 		

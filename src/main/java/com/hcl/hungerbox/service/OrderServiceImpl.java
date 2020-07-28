@@ -2,6 +2,7 @@ package com.hcl.hungerbox.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,15 +53,23 @@ public class OrderServiceImpl implements OrderService {
 	public OrderResDto placeOrder(OrderReqDto orderReqDto) {
 		logger.info("inside order service:  ");
 		OrderResDto orderResDto = new OrderResDto();
-		String message = "Order placed successfully";
+		String message;
 		List<OrderDto> requestOrder = orderReqDto.getItemList();
 
 		double totalCost = 0.00;
 		for (OrderDto order : requestOrder) {
 
-			String itemName = order.getItemName();
-			Item item = itemRepository.findByItemName(order.getItemName());
-			totalCost = totalCost + (item.getItemCost() * order.getQuantity());
+			//String itemName = order.getItemName();
+			Optional<Item> items = itemRepository.findByItemName(order.getItemName());
+			if(items.isPresent()) {
+				Item item = items.get();
+				totalCost = totalCost + (item.getItemCost() * order.getQuantity());
+			}else {
+				message = "Item not found";
+				orderResDto.setMessage(message);
+				orderResDto.setStatusCode(HttpStatus.NOT_FOUND.value());
+			}
+			
 		}
 
 		String userName = orderReqDto.getUserName();
@@ -68,7 +77,8 @@ public class OrderServiceImpl implements OrderService {
 
 		AccountDto fromAccount = accountClient.getAccounts(Integer.parseInt(user.getPhone()));
 		int toAccount = 58139;
-		ResponseEntity<String> transfer = accountClient.fundTransfer(fromAccount.getAcountNumber(), toAccount, (int) totalCost);
+		//ResponseEntity<String> transfer = accountClient.fundTransfer(fromAccount.getAcountNumber(), toAccount, (int) totalCost);
+		accountClient.fundTransfer(fromAccount.getAcountNumber(), toAccount, (int) totalCost);
 		Orders orders = new Orders();
 		orders.setTotalCost(totalCost);
 		orders.setUser(user);
@@ -77,12 +87,20 @@ public class OrderServiceImpl implements OrderService {
 		Orders order1 = ordersRepository.findTopByOrderByOrderIdDesc();
 		for (OrderDto order : requestOrder) {
 
-			String itemName = order.getItemName();
-			Item item = itemRepository.findByItemName(order.getItemName());
-			saveItemOrder(item, order.getQuantity(), order1);
-			// logger.info(verdor.getVendorDescription());
+			// String itemName = order.getItemName();
+			Optional<Item> items = itemRepository.findByItemName(order.getItemName());
+			if(items.isPresent()) {
+				Item item = items.get();
+				saveItemOrder(item, order.getQuantity(), order1);
+			}else {
+				message = "Item not found";
+				orderResDto.setMessage(message);
+				orderResDto.setStatusCode(HttpStatus.NOT_FOUND.value());
+			}
+			
+			
 		}
-		orderResDto.setMessage(message);
+		orderResDto.setMessage("Order placed successfully");
 		orderResDto.setStatusCode(HttpStatus.CREATED.value());
 		return orderResDto;
 
@@ -118,8 +136,6 @@ public class OrderServiceImpl implements OrderService {
 
 				transactionResDtos.add(transactionResDto);
 			}
-		}else {
-			
 		}
 		
 		return transactionResDtos;

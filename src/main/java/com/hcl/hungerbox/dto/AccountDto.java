@@ -7,7 +7,7 @@ public class AccountDto {
 	
 	private int userId;
 	
-	public int acountNumber;
+	private int acountNumber;
 	
 	private int availableBallance;
 	

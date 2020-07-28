@@ -18,6 +18,6 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
 	public Optional<List<Item>> findByItemNameContainsAndVendor(String itemName, Vendor vendor);
 
-	Item findByItemName(String itemName);
+	public Optional<Item> findByItemName(String itemName);
 	
 }
